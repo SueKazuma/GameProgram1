@@ -1,4 +1,5 @@
 #include "Stage.h"
+#include "Player.h"
 
 //const:‘‚«Š·‚¦‚ç‚ê‚È‚¢’è”
 //’¼Ú”š‚ğ‘‚­‚ÆlŠi”Û’è‚³‚ê‚é
@@ -9,20 +10,34 @@ const int CHIP_SIZE = 40;
 
 int map[HIGHT][WIDTH] = 
 {
-	{2,1,1,1,1,1,1,1,1,1,1,2},
+	{1,1,1,1,1,1,1,1,1,1,1,1},
 	{1,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,1,1,1,1,1,1,1,1,0,1},
 	{1,0,1,0,0,0,0,0,0,1,0,1},
 	{1,0,1,0,0,0,0,0,0,1,0,1},
-	{1,0,1,1,1,1,1,1,1,1,0,1},
+	{1,0,1,1,1,1,2,1,1,1,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,1},
-	{2,1,1,1,1,1,1,1,1,1,1,2},
+	{1,1,1,1,1,1,1,1,1,1,9,1},
 };
 
 
 Stage::Stage()
 {
 	hImage = LoadGraph("data/image/parts.png");
+
+	//9‚ğ’T‚µ‚ÄAPlayer‚ğ’u‚­
+	for (int j = 0; j < HIGHT; j++) 
+	{
+		for (int i = 0; i < WIDTH; i++)
+		{
+			if (map[j][i] == 9)
+			{
+				Player* p = Instantiate<Player>();
+				p->position.x = CHIP_SIZE *j;
+				p->position.y = CHIP_SIZE *i;
+			}
+		}
+	}
 }
 
 Stage::~Stage()
