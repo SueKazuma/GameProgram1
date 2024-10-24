@@ -44,6 +44,7 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>PlayScene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Coin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\config.h" />
@@ -96,6 +97,7 @@
     <ClInclude Include="Source\Player.h">
       <Filter>PlayScene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Coin.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Library">

@@ -12,7 +12,7 @@ Player::Player()
 
 Player::~Player()
 {
-	//DeleteGraph(hImage);
+	DeleteGraph(hImage);
 }
 
 void Player::Update()
