@@ -2,25 +2,9 @@
 #include "Player.h"
 #include "Coin.h"
 
-//const:書き換えられない定数
-//直接数字を書くと人格否定される
-//数字ではなく文字で書く
-const int WIDTH = 12;
-const int HIGHT = 8;
+//#include：このファイルデータ使ってくださいね！
 const int CHIP_SIZE = 40;
-
-int map[HIGHT][WIDTH] = 
-{
-	{1,9,0,1,1,1,1,1,1,1,1,1},
-	{1,0,1,0,0,0,0,1,0,0,0,0},
-	{1,0,1,0,0,1,0,1,0,2,0,1},
-	{1,0,1,0,2,2,2,2,2,2,0,1},
-	{1,0,1,0,0,0,0,0,1,1,1,1},
-	{1,0,1,0,1,0,1,1,0,0,0,1},
-	{1,0,0,0,1,0,0,0,0,1,2,1},
-	{1,1,1,1,1,1,1,1,1,1,1,1},
-};
-
+#include "stage1.h"
 
 Stage::Stage()
 {
@@ -45,6 +29,7 @@ Stage::Stage()
 			}
 		}
 	}
+	scroll = 0;
 }
 
 Stage::~Stage()
@@ -54,21 +39,22 @@ Stage::~Stage()
 
 void Stage::Draw()
 {
+
 	//x,y,切り抜き,切り抜き,40,40
-	for (int j = 0; j < HIGHT; j++)//縦「j」
+	for (int j = 0; j < HIGHT; j++)		//縦「j」
 	{
 		int y = j * CHIP_SIZE + 100;
-		for (int i = 0; i < WIDTH; i++)//幅「i」
+		for (int i = 0; i < WIDTH; i++)	//幅「i」
 		{
 			int x = i * CHIP_SIZE + 100;
-			if (map[j][i] == 1)//レンガ
+			if (map[j][i] == 1)		   //赤レンガ
 			{
-				DrawRectGraph(x, y, CHIP_SIZE*0, CHIP_SIZE*1, 40, 40, hImage, TRUE);
+				DrawRectGraph(x - scroll, y, CHIP_SIZE * 0, CHIP_SIZE * 1, 40, 40, hImage, TRUE);
 			}
-			//else if (map[j][i] == 2)//コイン
-			//{
-			//DrawRectGraph(x, y, CHIP_SIZE*3, CHIP_SIZE*0, 40, 40, hImage, TRUE);
-			//}
+			else if (map[j][i] == 8)   //ゴール
+			{
+				DrawRectGraph(x - scroll, y, CHIP_SIZE*4, CHIP_SIZE*0, 40, 40, hImage, TRUE);
+			}
 		}
 	}
 
@@ -133,4 +119,16 @@ int Stage::IsWallUp(VECTOR2 pos)
 		return push;
 	}
 	return 0;
+}
+
+bool Stage::IsGoal(VECTOR2 pos)
+{
+	//「マップチップ→座標」の逆、「座標→マップチップ」
+	int i = (pos.x - 100) / 40;
+	int j = (pos.y - 100) / 40;
+	if (map[j][i] == 8)
+	{
+		return true;
+	}
+	return false;
 }

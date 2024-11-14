@@ -3,11 +3,13 @@
 
 float VSize(VECTOR2 v)
 {
+    //ÉãÅ[Ég
     return sqrtf(v.x * v.x + v.y * v.y);
 }
 
 VECTOR2 VSub(VECTOR2 v1, VECTOR2 v2)
 {
+    //xé≤ÅAyé≤ÇÃí∑Ç≥ÇãÅÇﬂÇÈ
     VECTOR2 r;
     r.x = v1.x - v2.x;
     r.y = v1.y - v2.y;
@@ -16,6 +18,7 @@ VECTOR2 VSub(VECTOR2 v1, VECTOR2 v2)
 
 VECTOR2 VAdd(VECTOR2 v1, VECTOR2 v2)
 {
+    //îºåarÇï‘Ç∑
     VECTOR2 r;
     r.x = v1.x + v2.x;
     r.y = v1.y + v2.y;

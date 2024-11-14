@@ -1,5 +1,6 @@
 #include "Coin.h"
 #include "Player.h"
+#include "Stage.h"
 
 Coin::Coin()
 {
@@ -17,7 +18,9 @@ void Coin::Update()
 {
 	if (got) //取られたら
 	{
-		position.y -= 3;//浮遊感与えちゃったか…
+		position.y += v;//浮遊感与えちゃったか…
+		v += 9.8f / 60; // 重力/60フレーム
+
 		counter -= 1;
 		if (counter == 0)
 		{
@@ -35,10 +38,18 @@ void Coin::Update()
 		{
 			got = true;//取られた！
 			counter = 20;//死へのカウンター２０フレーム
+			v = -2.5;//跳ねる力(上方向なので「-」符号)
 		}
 }
 
 void Coin::Draw()
 {
-	DrawRectGraph(position.x, position.y,   40 * 3, 40 * 0,   40, 40, hImage, TRUE);
+	Stage* s = FindGameObject<Stage>();
+	DrawRectGraph(position.x - s->scroll, position.y, 40 * 3, 40 * 0, 40, 40, hImage, TRUE);
 }
+
+
+//放物線（二次方程式）　
+//[数学]　y = ax ^ 2 + bx + c;	　		←まぁ、使いませんケド！
+//[物理]　v = v0 + at／v = v0 + gt　	←ｖ:速 = v0:初速 + gt:初速　ｔ:時間
+//[プログラム]　x += v; v += g;

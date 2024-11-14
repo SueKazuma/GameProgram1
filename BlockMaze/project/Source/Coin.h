@@ -15,5 +15,6 @@ public:
 
 	bool got;//魔理沙は大変なコインを盗んでいきました
 	int counter;//コイン表示の寿命
+	float v;//跳ねる動きの速度
 };
 

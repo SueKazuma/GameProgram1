@@ -2,7 +2,8 @@
 #include "../Library/gameObject.h"
 #include "Vector2.h"
 
-class Player : public GameObject {
+class Player : public GameObject 
+{
 public:
 	Player();
 	~Player();
@@ -12,5 +13,10 @@ public:
 	int hImage;
 	VECTOR2 position;
 
-	int speed;
+	float speed;		//速度
+	float velocity;		//速度(力?)
+
+	bool prevJumpKey;	//前のジャンプキー
+	bool onGround;		//接地判定
+	bool goaled;		//ゴールしたよフラグ
 };

@@ -2,7 +2,8 @@
 #include "../Library/gameObject.h"
 #include "Vector2.h"
 
-class Stage : public GameObject {
+class Stage : public GameObject 
+{
 public:
 	Stage();
 	~Stage();
@@ -12,5 +13,10 @@ public:
 	int IsWallLeft(VECTOR2 pos);
 	int IsWallDown(VECTOR2 pos);
 	int IsWallUp(VECTOR2 pos);
-	int hImage;
+	
+	bool IsGoal(VECTOR2 pos);	//ゴールした?
+
+	int hImage;		//マップタイル
+
+	int scroll;		//画面のスクロール
 };
