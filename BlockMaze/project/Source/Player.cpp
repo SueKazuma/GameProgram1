@@ -151,7 +151,7 @@ void Player::Update()
 		s->scroll = position.x - 300; //スクロール速度をプレイヤーに合わせる
 	}
 
-	if (s->IsGoal(position + VECTOR2(20, 20))) //左上でなく中心で
+	if (s->IsGoal(position + VECTOR2(20, 20))) //ゴールは左上でなく中心で（右に20,下に20ずれる）
 	{
 		goaled = true;
 		Instantiate<GoalText>();
@@ -163,5 +163,3 @@ void Player::Draw()
 	Stage* s = FindGameObject<Stage>();
 	DrawRectGraph(position.x - s->scroll, position.y, 0, 0, 40, 40, hImage, TRUE);
 }
-
-//北へ。～Diamond Dust Drops～
