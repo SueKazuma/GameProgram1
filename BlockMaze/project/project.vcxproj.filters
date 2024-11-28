@@ -46,6 +46,7 @@
     </ClCompile>
     <ClCompile Include="Source\Coin.cpp" />
     <ClCompile Include="Source\GoalText.cpp" />
+    <ClCompile Include="Source\Fader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\config.h" />
@@ -104,6 +105,9 @@
     </ClInclude>
     <ClInclude Include="Source\GoalText.h">
       <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fader.h">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

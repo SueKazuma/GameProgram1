@@ -1,9 +1,11 @@
 #include "GoalText.h"
 #include "../Library/time.h"
+#include "Fader.h"
 
 GoalText::GoalText()
 {
 	timer = 0.0f;
+	fadeStarted = false;
 }
 
 GoalText::~GoalText()
@@ -15,6 +17,17 @@ int score = 100;
 
 void GoalText::Update()
 {
+	//フェード開始したら
+	if (fadeStarted)
+	{
+		Fader* f = FindGameObject<Fader>();
+		//Finish実行
+		if (f->IsFinish())
+		{
+			SceneManager::ChangeScene("TitleScene");
+		}
+		return; // フェード中なら以下の処理は行わない
+	}
 
 	//Time::DeltaTime();：秒で測れるためＰＣのフレーム性能に左右されない
 	timer += Time::DeltaTime();
@@ -24,7 +37,10 @@ void GoalText::Update()
 	{
 		if (CheckHitKey(KEY_INPUT_SPACE))
 		{
-			SceneManager::ChangeScene("TitleScene");
+			Fader* f = FindGameObject<Fader>();
+			f->FadeOut(GetColor(0, 0, 0), 0.5f);
+			fadeStarted = true; // フェード開始
+			
 		}
 	}
 

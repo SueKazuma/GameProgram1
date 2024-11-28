@@ -151,7 +151,7 @@ void Player::Update()
 		s->scroll = position.x - 300; //スクロール速度をプレイヤーに合わせる
 	}
 
-	if (s->IsGoal(position + VECTOR2(20, 20))) //ゴールは左上でなく中心で（右に20,下に20ずれる）
+	if (!goaled && s->IsGoal(position + VECTOR2(20, 20))) //ゴールは左上でなく中心で（右に20,下に20ずれる）
 	{
 		goaled = true;
 		Instantiate<GoalText>();

@@ -3,13 +3,15 @@
 #include "DebugScreen.h"
 #include <DxLib.h>
 #include "Stage.h"
-#include "Player.h"
+#include "Fader.h"
 
 PlayScene::PlayScene()
 {
 	Stage* s = Instantiate<Stage>();
 	//ステージを描く順番を10にしてください
 	SetDrawOrder(s, 10);
+
+	Instantiate<Fader>();
 }
 
 PlayScene::~PlayScene()

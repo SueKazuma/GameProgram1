@@ -11,4 +11,5 @@ public:
 	void Draw() override;
 
 	float timer;
+	bool fadeStarted;//フェード、開始ィィィィィ
 };
