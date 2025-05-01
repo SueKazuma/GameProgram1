@@ -14,9 +14,8 @@ void Axis::Update()
 
 void Axis::Draw()
 {
-	SetCameraPositionAndTarget_UpVecY(VGet(100, 200, -300), VGet(0, 0, 0));//(俯瞰、俯瞰、手前)
+	//SetCameraPositionAndTarget_UpVecY(VGet(100, 200, -300), VGet(0, 0, 0));//(俯瞰、俯瞰、手前)
 	//SetCameraPositionAndTarget_UpVecY(VGet(0, 300, -10), VGet(0, 0, 0));//y軸視点
-	//SetCameraPositionAndTarget_UpVecY(VGet(-10, 0, 300), VGet(0, 0, 0));//z軸視点
 
 
 	DrawLine3D(VGet(-100, 0, 0), VGet(100, 0, 0), GetColor(255, 0, 0));
