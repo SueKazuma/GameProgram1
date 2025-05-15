@@ -31,8 +31,20 @@ Player::~Player()
 void Player::Update()
 {
 	anim->Update();
+
+	if (CheckHitKey(KEY_INPUT_D))
+	{
+		rotation.y += 3.0f * DegToRad;
+	}
+	if (CheckHitKey(KEY_INPUT_A))
+	{
+		rotation.y -= 3.0f * DegToRad;
+	}
 	if (CheckHitKey(KEY_INPUT_W))
 	{
+		//‰ñ‚Á‚Ä‚È‚¢*‰ñ“]s—ñ(¡‰ñ‚ÍYŽ²‚Å‚µ‚©‰ñ‚µ‚Ä‚¢‚È‚¢)
+		position += VGet(0.0f, 0.0f, 3.0f) * MGetRotY(rotation.y);
+		
 		anim->Play(1);
 	}
 	else
