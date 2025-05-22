@@ -74,6 +74,8 @@
     <ClCompile Include="Source\Coin.cpp">
       <Filter>PlayScene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ReadyGo.cpp" />
+    <ClCompile Include="Source\PlayTime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Screen.h" />
@@ -162,6 +164,10 @@
     <ClInclude Include="Source\Coin.h">
       <Filter>PlayScene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ReadyGo.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayTime.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Library">
