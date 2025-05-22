@@ -3,7 +3,6 @@
 #include "Camera.h"
 #include "Stage.h"
 
-
 PlayScene::PlayScene()
 {
 	new Axis();

@@ -62,12 +62,18 @@
     <ClCompile Include="Source\Stage.cpp">
       <Filter>PlayScene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Player.cpp" />
-    <ClCompile Include="Source\Animator.cpp" />
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animator.cpp">
+      <Filter>PlayScene</Filter>
+    </ClCompile>
     <ClCompile Include="Source\CsvReader.cpp">
       <Filter>PlayScene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Coin.cpp" />
+    <ClCompile Include="Source\Coin.cpp">
+      <Filter>PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Screen.h" />
@@ -153,7 +159,9 @@
     <ClInclude Include="Source\CsvReader.h">
       <Filter>PlayScene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Coin.h" />
+    <ClInclude Include="Source\Coin.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Library">

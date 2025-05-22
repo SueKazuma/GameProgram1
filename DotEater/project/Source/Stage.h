@@ -9,5 +9,5 @@ public:
 	~Stage();
 	void Draw() override;
 private:
-	std::vector<std::vector<int>>maps;
+	std::vector<std::vector<int>> maps;
 };

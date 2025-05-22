@@ -1,5 +1,6 @@
 #pragma once
 #include "Object3D.h"
+
 class Coin : public Object3D
 {
 public:
@@ -7,9 +8,8 @@ public:
 	~Coin();
 	void Update() override;
 private:
-	bool gotten; // ‚Æ‚ç‚ê‚¿‚á‚Á‚½
+	bool gotten; // Žæ‚ç‚ê‚½‚æ
 	void homingStart();
 	void homingUpdate();
 	VECTOR3 velocity; // ˆÚ“®ƒxƒNƒgƒ‹
 };
-

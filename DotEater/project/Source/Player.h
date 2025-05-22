@@ -10,6 +10,5 @@ public:
 	~Player();
 	void Update() override;
 private:
-	Animator* anim; // ‚Û‚¢‚ñ‚½
-
+	Animator* anim;
 };
