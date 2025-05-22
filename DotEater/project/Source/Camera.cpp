@@ -25,7 +25,7 @@ void Camera::Draw()
 	VECTOR pRot = p->GetRotation();
 	VECTOR pPos = p->GetPosition();
 
-	VECTOR camPos = VGet(0, 200, -400) * MGetRotY(pRot.y) + pPos;
+	VECTOR camPos = VGet(0, 300, -500) * MGetRotY(pRot.y) + pPos;
 	VECTOR camLook = pPos + VGet(0, 100, 0);
 
 	//VECTOR pos = VGet(0,0,-distance) * MGetRotX(rotation.x) * MGetRotY(rotation.y);

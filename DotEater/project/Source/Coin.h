@@ -8,5 +8,8 @@ public:
 	void Update() override;
 private:
 	bool gotten; // ‚Æ‚ç‚ê‚¿‚á‚Á‚½
+	void homingStart();
+	void homingUpdate();
+	VECTOR3 velocity; // ˆÚ“®ƒxƒNƒgƒ‹
 };
 
