@@ -51,6 +51,7 @@
       <Filter>Library</Filter>
     </ClCompile>
     <ClCompile Include="Source\Ball.cpp" />
+    <ClCompile Include="Source\BallManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Screen.h" />
@@ -113,6 +114,9 @@
       <Filter>Library</Filter>
     </ClInclude>
     <ClInclude Include="Source\Ball.h" />
+    <ClInclude Include="Source\BallManager.h">
+      <Filter>PlayScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Library">

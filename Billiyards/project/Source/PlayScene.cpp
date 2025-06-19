@@ -1,11 +1,14 @@
 #include "PlayScene.h"
 #include <DxLib.h>
 #include "Ball.h"
+#include "BallManager.h"
 
 PlayScene::PlayScene()
 {
 	new Ball(1, VECTOR3(100, 200, 0));
 	new Ball(3, VECTOR3(300, 200, 0));
+	new Ball(16, VECTOR3(800, 200, 0));
+	new BallManager();
 }
 
 PlayScene::~PlayScene()
