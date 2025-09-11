@@ -6,7 +6,8 @@ class Stage : public Object3D {
 public:
 	Stage(int number = 0);
 	~Stage();
-	struct ColliderRet {
+	struct ColliderRet 
+	{
 		VECTOR3 VPush; // ‚’¼•ûŒü‚Ì‰Ÿ‚µo‚µ
 		VECTOR3 HPush; // …•½•ûŒü‚Ì‰Ÿ‚µo‚µ
 	};
