@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "PadInput.h"
 
 namespace 
 {
@@ -17,22 +18,30 @@ Camera::~Camera()
 
 void Camera::Update()
 {
+	// →Pad
+	PadInput* pad = FindGameObject<PadInput>();
+	float padX = pad->RStickX();
+	float padY = pad->RStickY();
+	transform.rotation.y += padX * 3.0f * DegToRad;
+	transform.rotation.x -= padY * 3.0f * DegToRad;
+
+
 	#pragma region カメラ移動
 	// 左右（キー）
-	if (CheckHitKey(KEY_INPUT_RIGHT)) // キー入力
+	if (CheckHitKey(KEY_INPUT_RIGHT)) // →Key
 	{
 		transform.rotation.y += 3.0f * DegToRad;
 	}
-	else if (CheckHitKey(KEY_INPUT_LEFT)) // キー入力
+	else if (CheckHitKey(KEY_INPUT_LEFT)) // →Key
 	{
 		transform.rotation.y -= 3.0f * DegToRad;
 	}
 	// 上下（キー）
-	if (CheckHitKey(KEY_INPUT_DOWN)) // キー入力
+	if (CheckHitKey(KEY_INPUT_DOWN)) // →Key
 	{
 		transform.rotation.x -= 3.0f * DegToRad;
 	}
-	else if (CheckHitKey(KEY_INPUT_UP)) // キー入力
+	else if (CheckHitKey(KEY_INPUT_UP)) // →Key
 	{
 		transform.rotation.x += 3.0f * DegToRad;
 	}

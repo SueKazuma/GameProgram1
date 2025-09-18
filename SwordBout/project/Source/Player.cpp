@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "Stage.h"
 #include "Camera.h"
+#include "PadInput.h"
 
 Player::Player() : Player(VGet(0,0,0), 0.0f){}
 
@@ -126,23 +127,10 @@ void Player::UpdateNormal()
 #pragma region
 	// “ü—Í‚ðƒxƒNƒgƒ‹‚É’¼‚·
 	VECTOR3 inputVec = VECTOR3(0, 0, 0);
-	if (CheckHitKey(KEY_INPUT_W))
-	{
-		inputVec += VECTOR3(0, 0, 1);
-	}
-	if (CheckHitKey(KEY_INPUT_S))
-	{
-		inputVec += VECTOR3(0, 0, -1);
-	}
-	if (CheckHitKey(KEY_INPUT_D))
-	{
-		inputVec += VECTOR3(1, 0, 0);
-	}
-	if (CheckHitKey(KEY_INPUT_A))
-	{
-		inputVec += VECTOR3(-1, 0, 0);
-	}
-	inputVec = inputVec.Normalize(); // ’·‚³1‚Ì•ûŒü‚¾‚¯
+	PadInput* pad = FindGameObject<PadInput>();
+	VECTOR2 inp = pad->LStickVec();
+	inputVec.x = inp.x;
+	inputVec.z = inp.y;
 
 	if (inputVec.Size() > 0)
 	{
@@ -185,7 +173,7 @@ void Player::UpdateNormal()
 
 	// UŒ‚
 #pragma region
-	if (CheckHitKey(KEY_INPUT_M))
+	if (pad->OnPush(XINPUT_BUTTON_X) )
 	{
 		animator->Play(A_ATTACK1);
 		state = State::ST_ATTACK1;
