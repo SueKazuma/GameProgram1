@@ -41,11 +41,9 @@ Player::Player(const VECTOR3& pos, float rot)
 
 	camera = FindGameObject<Camera>();
 
-	// サーベルモデルを読む
 	hSabel = MV1LoadModel("data/model/Character/Weapon/Sabel/Sabel.mv1");
 	assert(hSabel > 0);
 	
-
 	state = ST_NORMAL;
 }
 
@@ -61,130 +59,83 @@ Player::~Player()
 		animator = nullptr;
 	}
 }
-
 VECTOR3 moveVec;
 
 void Player::Update()
 {
-	// アニメーションの更新
 	animator->Update();
-
-	// 地に足着ける
-#pragma region 
-	Stage* stage = FindGameObject<Stage>();
-	VECTOR pos1 = transform.position + VGet(0.0f, 100.0f, 0.0f);
-	VECTOR pos2 = transform.position - VGet(0.0f, 100.0f, 0.0f);
-	VECTOR hit; // 地面の座標が入る変数
-	if (stage->CollideLine(pos1, pos2, &hit))
-	{
-		// 地面上を歩く
-		transform.position = hit;
-	}
-#pragma endregion
-
-	// カメラ座標をセット
-	camera->SetPlayerPosition(transform.position);
-
-	switch (state)
-	{
-	case Player::ST_NORMAL:
+	switch (state) {
+	case ST_NORMAL:
 		UpdateNormal();
 		break;
-	case Player::ST_ATTACK1:
+	case ST_ATTACK1:
 		UpdateAttack1();
 		break;
-	case Player::ST_ATTACK2:
-		break;
-	case Player::ST_ATTACK3:
-		break;
-	default:
-		break;
 	}
+
+	Stage* stage = FindGameObject<Stage>();
+	VECTOR hit; // 地面の座標が入る変数
+	VECTOR pos1 = transform.position + VGet(0, 100, 0);
+	VECTOR pos2 = transform.position + VGet(0, -100, 0);
+	if (stage->CollideLine(pos1, pos2, &hit))
+	{
+		transform.position = hit;
+	}
+	camera->SetPlayerPosition(transform.position);
 }
 
 void Player::Draw()
-{
-	// キャラの描画
-	Object3D::Draw();
-	DrawLine3D(transform.position + moveVec * 100.0f, transform.position, GetColor(255.0f, 0.0f, 0.0f));
+{	
+	Object3D::Draw(); // キャラの表示
+	DrawLine3D(transform.position + moveVec*100, transform.position,
+		GetColor(255,0,0));
 
-	// サーベルの描画
 	MATRIX m = MV1GetFrameLocalWorldMatrix(hModel, 29);
 	MV1SetMatrix(hSabel, m);
 	MV1DrawModel(hSabel);
 
-	VECTOR s1 = VGet(0.0f, 0.0f, 0.0f) * m;
-	VECTOR s2 = VGet(0.0f, -100.0f, 0.0f) * m;
-	DrawLine3D(s1, s2, GetColor(255.0f, 0.0f, 0.0f));
+	VECTOR s1 = VGet(0,0,0) * m;
+	VECTOR s2 = VGet(0,-100,0) * m;
+	DrawLine3D(s1, s2, GetColor(255,0,0));
 }
 
-/// <summary>
-/// State関数。
-/// </summary>
 void Player::UpdateNormal()
 {
-	// 移動
-#pragma region
 	// 入力をベクトルに直す
 	VECTOR3 inputVec = VECTOR3(0, 0, 0);
 	PadInput* pad = FindGameObject<PadInput>();
 	VECTOR2 inp = pad->LStickVec();
 	inputVec.x = inp.x;
 	inputVec.z = inp.y;
-
-	if (inputVec.Size() > 0)
-	{
+	// 進みたいベクトルを求める（実際に進むベクトル）
+	//　　　カメラの回転は、camera->GetTransform().rotationで手に入る
+	if (inputVec.Size() > 0) {
 		animator->Play(A_RUN);
-		// 進みたいベクトルを求める(実際に進むベクトル)
-		//camera->GetTransform().rotation;（カメラの回転を取得）
 		moveVec = inputVec * MGetRotY(camera->GetTransform().rotation.y);
 		VECTOR3 front = VECTOR3(0, 0, 1) * MGetRotY(transform.rotation.y);
 		VECTOR3 right = VECTOR3(1, 0, 0) * MGetRotY(transform.rotation.y);
-
-		// 回転を合わせる(1Fで60度):角度が合わなければ進まない
-		// コサイン！(内積)
 		float moveCos = VDot(moveVec, front);
-
-		//float rightCos = VDot(moveVec, right);
-
-		// cosが30度以内なら進む
-		if (moveCos >= cosf(30.0f * DegToRad)) // 正面付近
-		{
+		if (moveCos >= cosf(30.0f * DegToRad)) { // 正面付近
 			transform.position += moveVec * 5.0f;
 			transform.rotation.y = atan2f(moveVec.x, moveVec.z);
-		}
-		// 30度以上
-		// 前
-		else if (VDot(moveVec, right) >= 0.0f)
-		{
+		} else if (VDot(moveVec, right) >= 0) {
 			transform.rotation.y += 30.0f * DegToRad;
-		}
-		// 後
-		else
-		{
+		} else {
 			transform.rotation.y -= 30.0f * DegToRad;
 		}
-	}
-	else
-	{
+	} else {
 		animator->Play(A_NEUTRAL);
 	}
-#pragma endregion
-
-	// 攻撃
-#pragma region
-	if (pad->OnPush(XINPUT_BUTTON_X) )
+	if (pad->OnPush(XINPUT_BUTTON_A)) // 攻撃
 	{
 		animator->Play(A_ATTACK1);
-		state = State::ST_ATTACK1;
+		state = ST_ATTACK1; //状態を変える
 	}
-#pragma endregion
 }
 
 void Player::UpdateAttack1()
 {
-	if (animator->IsFinish())
-	{
-		state = State::ST_NORMAL;
+	if (animator->IsFinish()) { // 攻撃アニメーションが終わった
+		state = ST_NORMAL; //状態を変える
 	}
 }

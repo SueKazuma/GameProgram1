@@ -17,16 +17,14 @@ Stage::Stage(int number)
 	sprintf_s<16>(filename, "Stage%02d", number);
 	new StageObject(filename, VGet(0,0,0), VGet(0,0,0), VGet(1,1,1));
 	ReadMappingData(filename);
-	if (number == 0) 
-	{
+	if (number == 0) {
 		new Sky("Stage00_sky");
 	}
 }
 
 Stage::~Stage()
 {
-	if (hModel > 0) 
-	{
+	if (hModel > 0) {
 		MV1DeleteModel(hModel);
 		hModel = -1;
 	}
@@ -45,8 +43,7 @@ void Stage::ReadMappingData(std::string filename)
 	std::ifstream ifs(folder + filename + ".dat", std::ios::binary);
 	assert(ifs); // ì«ÇﬂÇ»ÇØÇÍÇŒÉGÉâÅ[
 
-	struct Header 
-	{
+	struct Header {
 		char chunk[4];
 		int CharaInfoNum;
 		int ObjectInfoNum;
@@ -58,21 +55,18 @@ void Stage::ReadMappingData(std::string filename)
 		int killCharaNum;
 		int killTargetChara;
 	};
-	struct CharaInfo 
-	{
+	struct CharaInfo {
 		int id;
 		VECTOR position;
 		float angle;
 	};
-	struct ObjectInfo 
-	{
+	struct ObjectInfo {
 		int id;
 		VECTOR position;
 		VECTOR rotation;
 		VECTOR scale;
 	};
-	struct EventInfo 
-	{
+	struct EventInfo {
 		int type;
 		VECTOR position;
 		VECTOR area;
