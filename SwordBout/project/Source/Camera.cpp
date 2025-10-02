@@ -21,7 +21,13 @@ void Camera::Update()
 	float padX = pad->LStickX();
 	transform.rotation.y += padX * 3.0f * DegToRad;
 
+<<<<<<< HEAD
 	if (CheckHitKey(KEY_INPUT_RIGHT))  //¨ƒL[
+=======
+	#pragma region ƒJƒƒ‰ˆÚ“®
+	// ¶‰EiƒL[j
+	if (CheckHitKey(KEY_INPUT_RIGHT)) // ¨Key
+>>>>>>> ä¸Šæ›¸ãå‰ï¼Ÿ
 	{
 		transform.rotation.y += 3.0f * DegToRad;
 	}

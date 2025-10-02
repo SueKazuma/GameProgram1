@@ -19,6 +19,7 @@ PadInput::~PadInput()
 {
 }
 
+<<<<<<< HEAD
 float StickValue(int stick) {
     if (-LIMIT < stick && stick < LIMIT)
     {
@@ -38,6 +39,24 @@ float StickValue(int stick) {
         }
         return ret;
     }
+=======
+void PadInput::Update()
+{
+	for (int i = 0; i < 16; i++)
+	{
+		prevButtons[i] = input.Buttons[i];
+	}
+	GetJoypadXInputState(padId, &input);
+	if (CheckHitKey(KEY_INPUT_M)) 
+	{
+		input.Buttons[XINPUT_BUTTON_A] = 1;
+	}
+}
+
+void PadInput::Draw()
+{
+	DrawFormatString(200, 50, GetColor(255, 255, 255), "LStick %d %d", input.ThumbLX, input.ThumbLY);
+>>>>>>> 上書き前？
 }
 
 float PadInput::LStickX()
@@ -79,6 +98,7 @@ VECTOR2 StickVec(int x, int y)
 
 VECTOR2 PadInput::LStickVec()
 {
+<<<<<<< HEAD
     VECTOR2 ret = VECTOR2(LStickX(), LStickY());
     if (CheckHitKey(KEY_INPUT_W)) 
     {
@@ -101,11 +121,60 @@ VECTOR2 PadInput::LStickVec()
         ret = ret.Normalize();
     }
     return ret;
+=======
+	VECTOR2 ret = VECTOR2(LStickX(), LStickY());
+	if (CheckHitKey(KEY_INPUT_W)) // Key
+	{
+		ret += VECTOR2(0, 1);
+	}
+	if (CheckHitKey(KEY_INPUT_S)) // Key
+	{
+		ret += VECTOR2(0, -1);
+	}
+	if (CheckHitKey(KEY_INPUT_D)) // Key
+	{
+		ret += VECTOR2(1, 0);
+	}
+	if (CheckHitKey(KEY_INPUT_A)) // Key
+	{
+		ret += VECTOR2(-1, 0);
+	}
+	if (ret.Size() > 1.0f) 
+	{
+		ret = ret.Normalize();
+	}
+	return ret;
+>>>>>>> 上書き前？
 }
 
 VECTOR2 PadInput::RStickVec()
 {
+<<<<<<< HEAD
     return StickVec(input.ThumbRX, input.ThumbRY);
+=======
+	VECTOR2 ret = VECTOR2(RStickX(), RStickY());
+	if (CheckHitKey(KEY_INPUT_W)) // Key
+	{
+		ret += VECTOR2(0, 1);
+	}
+	if (CheckHitKey(KEY_INPUT_S)) // Key
+	{
+		ret += VECTOR2(0, -1);
+	}
+	if (CheckHitKey(KEY_INPUT_D)) // Key
+	{
+		ret += VECTOR2(1, 0);
+	}
+	if (CheckHitKey(KEY_INPUT_A)) // Key
+	{
+		ret += VECTOR2(-1, 0);
+	}
+	if (ret.Size() > 1.0f)
+	{
+		ret = ret.Normalize();
+	}
+	return ret;
+>>>>>>> 上書き前？
 }
 
 bool PadInput::Press(int id)
@@ -116,8 +185,13 @@ bool PadInput::Press(int id)
 
 bool PadInput::OnPush(int id)
 {
+<<<<<<< HEAD
     assert(id < 16);
     return input.Buttons[id] > 0 && prevButtons[id] == 0;
+=======
+	assert(id < 16); //?
+	return input.Buttons[id] > 0 && prevButtons[id] == 0;
+>>>>>>> 上書き前？
 }
 
 void PadInput::Reset()

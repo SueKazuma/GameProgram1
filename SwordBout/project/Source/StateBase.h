@@ -11,7 +11,8 @@ public:
 protected:
 	GameObject* baseObject;
 	template<class C>
-	C* GetBase() {
+	C* GetBase() 
+	{
 		return dynamic_cast<C*>(baseObject);
 	}
 };
