@@ -3,6 +3,7 @@
 #include "Stage.h"
 #include "Camera.h"
 #include "PadInput.h"
+#include "Goblin.h"
 
 Player::Player() : Player(VGet(0,0,0), 0.0f){}
 
@@ -44,7 +45,6 @@ Player::Player(const VECTOR3& pos, float rot)
 	// サーベルモデルを読む
 	hSabel = MV1LoadModel("data/model/Character/Weapon/Sabel/Sabel.mv1");
 	assert(hSabel > 0);
-	
 
 	state = ST_NORMAL;
 }
@@ -94,8 +94,10 @@ void Player::Update()
 		UpdateAttack1();
 		break;
 	case Player::ST_ATTACK2:
+		UpdateAttack2();
 		break;
 	case Player::ST_ATTACK3:
+		UpdateAttack3();
 		break;
 	default:
 		break;
@@ -109,13 +111,14 @@ void Player::Draw()
 	DrawLine3D(transform.position + moveVec * 100.0f, transform.position, GetColor(255.0f, 0.0f, 0.0f));
 
 	// サーベルの描画
-	MATRIX m = MV1GetFrameLocalWorldMatrix(hModel, 29);
+	m = MV1GetFrameLocalWorldMatrix(hModel, 29);
+	sabelBtm = VGet(0.0f, 0.0f, 0.0f) * m;
+	sabelTop = VGet(0.0f, -100.0f, 0.0f) * m;
+
 	MV1SetMatrix(hSabel, m);
 	MV1DrawModel(hSabel);
-
-	VECTOR s1 = VGet(0.0f, 0.0f, 0.0f) * m;
-	VECTOR s2 = VGet(0.0f, -100.0f, 0.0f) * m;
-	DrawLine3D(s1, s2, GetColor(255.0f, 0.0f, 0.0f));
+	// サーベルライン
+	DrawLine3D(sabelBtm, sabelTop, GetColor(255.0f, 0.0f, 0.0f));
 }
 
 /// <summary>
@@ -173,8 +176,9 @@ void Player::UpdateNormal()
 
 	// 攻撃
 #pragma region
-	if (pad->OnPush(XINPUT_BUTTON_X) )
+	if (pad->OnPush(XINPUT_BUTTON_A) )
 	{
+		canNextAttack = false;
 		animator->Play(A_ATTACK1);
 		state = State::ST_ATTACK1;
 	}
@@ -183,6 +187,64 @@ void Player::UpdateNormal()
 
 void Player::UpdateAttack1()
 {
+	// 攻撃入力分岐
+	if (animator->GetCurrentFrame() >= 8.5f)
+	{
+		if (canNextAttack)
+		{
+			canNextAttack = false;
+			animator->Play(A_ATTACK2);
+			state = State::ST_ATTACK2;
+		}
+		else if (animator->IsFinish())
+		{
+			canNextAttack = false;
+			state = State::ST_NORMAL;
+		}
+	}
+	else 
+	{
+		PadInput* pad = FindGameObject<PadInput>();
+		if (pad->OnPush(XINPUT_BUTTON_A)) 
+		{
+			canNextAttack = true;
+		}
+
+		Goblin* goblin = FindGameObject<Goblin>();
+		goblin->CheckAttack(sabelBtm, sabelTop);
+	}
+}
+
+void Player::UpdateAttack2()
+{
+	// 攻撃入力分岐
+	if (animator->GetCurrentFrame() >= 8.5f)
+	{
+		if (canNextAttack)
+		{
+			canNextAttack = false;
+			animator->Play(A_ATTACK3);
+			state = State::ST_ATTACK3;
+		}
+		else if (animator->IsFinish())
+		{
+			canNextAttack = false;
+			state = State::ST_NORMAL;
+		}
+	}
+	else
+	{
+		PadInput* pad = FindGameObject<PadInput>();
+		if (pad->OnPush(XINPUT_BUTTON_A))
+		{
+			canNextAttack = true;
+		}
+	}
+}
+
+void Player::UpdateAttack3()
+{
+	// 攻撃終了後、アイドル状態へ
 	if (animator->IsFinish())
 	{
 		state = State::ST_NORMAL;

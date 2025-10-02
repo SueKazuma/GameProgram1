@@ -25,7 +25,6 @@ void Camera::Update()
 	transform.rotation.y += padX * 3.0f * DegToRad;
 	transform.rotation.x -= padY * 3.0f * DegToRad;
 
-
 	#pragma region カメラ移動
 	// 左右（キー）
 	if (CheckHitKey(KEY_INPUT_RIGHT)) // →Key

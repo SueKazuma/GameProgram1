@@ -20,6 +20,10 @@ void PadInput::Update()
 		prevButtons[i] = input.Buttons[i];
 	}
 	GetJoypadXInputState(padId, &input);
+	if (CheckHitKey(KEY_INPUT_M)) 
+	{
+		input.Buttons[XINPUT_BUTTON_A] = 1;
+	}
 }
 
 void PadInput::Draw()
@@ -141,6 +145,22 @@ float PadInput::RStickY()
 VECTOR2 PadInput::LStickVec()
 {
 	VECTOR2 ret = VECTOR2(LStickX(), LStickY());
+	if (CheckHitKey(KEY_INPUT_W)) // Key
+	{
+		ret += VECTOR2(0, 1);
+	}
+	if (CheckHitKey(KEY_INPUT_S)) // Key
+	{
+		ret += VECTOR2(0, -1);
+	}
+	if (CheckHitKey(KEY_INPUT_D)) // Key
+	{
+		ret += VECTOR2(1, 0);
+	}
+	if (CheckHitKey(KEY_INPUT_A)) // Key
+	{
+		ret += VECTOR2(-1, 0);
+	}
 	if (ret.Size() > 1.0f) 
 	{
 		ret = ret.Normalize();
@@ -151,25 +171,22 @@ VECTOR2 PadInput::LStickVec()
 VECTOR2 PadInput::RStickVec()
 {
 	VECTOR2 ret = VECTOR2(RStickX(), RStickY());
-
-	// ←Key（動かん😿）
-	if (CheckHitKey(KEY_INPUT_W))
+	if (CheckHitKey(KEY_INPUT_W)) // Key
 	{
 		ret += VECTOR2(0, 1);
 	}
-	if (CheckHitKey(KEY_INPUT_S))
+	if (CheckHitKey(KEY_INPUT_S)) // Key
 	{
 		ret += VECTOR2(0, -1);
 	}
-	if (CheckHitKey(KEY_INPUT_D))
+	if (CheckHitKey(KEY_INPUT_D)) // Key
 	{
 		ret += VECTOR2(1, 0);
 	}
-	if (CheckHitKey(KEY_INPUT_A))
+	if (CheckHitKey(KEY_INPUT_A)) // Key
 	{
 		ret += VECTOR2(-1, 0);
 	}
-
 	if (ret.Size() > 1.0f)
 	{
 		ret = ret.Normalize();
@@ -187,7 +204,6 @@ bool PadInput::OnPush(int id)
 {
 	assert(id < 16); //?
 	return input.Buttons[id] > 0 && prevButtons[id] == 0;
-
 }
 
 void PadInput::Reset()
