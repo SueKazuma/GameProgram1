@@ -21,10 +21,12 @@ void Camera::Update()
 	float padX = pad->LStickX();
 	transform.rotation.y += padX * 3.0f * DegToRad;
 
-	if (CheckHitKey(KEY_INPUT_RIGHT)) { //→キー
+	if (CheckHitKey(KEY_INPUT_RIGHT))  //→キー
+	{
 		transform.rotation.y += 3.0f * DegToRad;
 	}
-	if (CheckHitKey(KEY_INPUT_LEFT)) { //→キー
+	if (CheckHitKey(KEY_INPUT_LEFT))  //→キー
+	{ 		
 		transform.rotation.y -= 3.0f * DegToRad;
 	}
 	if (CheckHitKey(KEY_INPUT_UP)) { //→キー

@@ -80,19 +80,24 @@ VECTOR2 StickVec(int x, int y)
 VECTOR2 PadInput::LStickVec()
 {
     VECTOR2 ret = VECTOR2(LStickX(), LStickY());
-    if (CheckHitKey(KEY_INPUT_W)) {
+    if (CheckHitKey(KEY_INPUT_W)) 
+    {
         ret += VECTOR2(0, 1);
     }
-    if (CheckHitKey(KEY_INPUT_S)) {
+    if (CheckHitKey(KEY_INPUT_S)) 
+    {
         ret += VECTOR2(0, -1);
     }
-    if (CheckHitKey(KEY_INPUT_D)) {
+    if (CheckHitKey(KEY_INPUT_D)) 
+    {
         ret += VECTOR2(1, 0);
     }
-    if (CheckHitKey(KEY_INPUT_A)) {
+    if (CheckHitKey(KEY_INPUT_A)) 
+    {
         ret += VECTOR2(-1, 0);
     }
-    if (ret.Size() > 1.0f) {
+    if (ret.Size() > 1.0f) 
+    {
         ret = ret.Normalize();
     }
     return ret;

@@ -64,7 +64,8 @@ VECTOR3 moveVec;
 void Player::Update()
 {
 	animator->Update();
-	switch (state) {
+	switch (state) 
+	{
 	case ST_NORMAL:
 		UpdateNormal();
 		break;
@@ -108,7 +109,7 @@ void Player::UpdateNormal()
 	inputVec.x = inp.x;
 	inputVec.z = inp.y;
 	// 進みたいベクトルを求める（実際に進むベクトル）
-	//　　　カメラの回転は、camera->GetTransform().rotationで手に入る
+	// カメラの回転は、camera->GetTransform().rotationで手に入る
 	if (inputVec.Size() > 0) {
 		animator->Play(A_RUN);
 		moveVec = inputVec * MGetRotY(camera->GetTransform().rotation.y);
