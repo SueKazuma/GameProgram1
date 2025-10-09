@@ -19,21 +19,24 @@ PadInput::~PadInput()
 {
 }
 
-float StickValue(int stick) {
+float StickValue(int stick) 
+{
     if (-LIMIT < stick && stick < LIMIT)
     {
         return 0.0f;
     } else if (stick > 0)
     {
         float ret = (float)(stick - LIMIT) / (MAX - LIMIT);
-        if (ret > 1.0f) {
+        if (ret > 1.0f) 
+        {
             ret = 1.0f;
         }
         return ret;
     } else
     {
         float ret = (float)(stick + LIMIT) / (MAX - LIMIT);
-        if (ret < -1.0f) {
+        if (ret < -1.0f) 
+        {
             ret = -1.0f;
         }
         return ret;
@@ -42,10 +45,12 @@ float StickValue(int stick) {
 
 float PadInput::LStickX()
 {
-    if (CheckHitKey(KEY_INPUT_D)) {
+    if (CheckHitKey(KEY_INPUT_D)) 
+    {
         return 1.0f;
     }
-    if (CheckHitKey(KEY_INPUT_A)) {
+    if (CheckHitKey(KEY_INPUT_A)) 
+    {
         return -1.0f;
     }
     return StickValue(input.ThumbLX);
@@ -53,10 +58,12 @@ float PadInput::LStickX()
 
 float PadInput::LStickY()
 {
-    if (CheckHitKey(KEY_INPUT_W)) {
+    if (CheckHitKey(KEY_INPUT_W)) 
+    {
         return 1.0f;
     }
-    if (CheckHitKey(KEY_INPUT_S)) {
+    if (CheckHitKey(KEY_INPUT_S)) 
+    {
         return -1.0f;
     }
     return StickValue(input.ThumbLY);
@@ -64,11 +71,13 @@ float PadInput::LStickY()
 
 float PadInput::RStickX()
 {
-    if (CheckHitKey(KEY_INPUT_RIGHT)) {
+    if (CheckHitKey(KEY_INPUT_RIGHT)) 
+    {
         return 1.0f;
     }
 
-    if (CheckHitKey(KEY_INPUT_LEFT)) {
+    if (CheckHitKey(KEY_INPUT_LEFT)) 
+    {
         return -1.0f;
     }
     return StickValue(input.ThumbRX);
@@ -76,11 +85,13 @@ float PadInput::RStickX()
 
 float PadInput::RStickY()
 {
-    if (CheckHitKey(KEY_INPUT_UP)) {
+    if (CheckHitKey(KEY_INPUT_UP)) 
+    {
         return 1.0f;
     }
 
-    if (CheckHitKey(KEY_INPUT_DOWN)) {
+    if (CheckHitKey(KEY_INPUT_DOWN)) 
+    {
         return -1.0f;
     }
     return StickValue(input.ThumbRY);
@@ -89,7 +100,8 @@ float PadInput::RStickY()
 VECTOR2 PadInput::LStickVec()
 {
     VECTOR2 ret = VECTOR2(LStickX(), LStickY());
-    if (ret.Size() > 1.0f) {
+    if (ret.Size() > 1.0f) 
+    {
         ret = ret.Normalize();
     }
     return ret;
@@ -98,7 +110,8 @@ VECTOR2 PadInput::LStickVec()
 VECTOR2 PadInput::RStickVec()
 {
     VECTOR2 ret = VECTOR2(RStickX(), RStickY());
-    if (ret.Size() > 1.0f) {
+    if (ret.Size() > 1.0f) 
+    {
         ret = ret.Normalize();
     }
     return ret;

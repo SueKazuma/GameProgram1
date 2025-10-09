@@ -26,12 +26,14 @@ Golem::Golem(const VECTOR& pos, float rot)
 
 Golem::~Golem()
 {
-	if (animator != nullptr) {
+	if (animator != nullptr) 
+	{
 		delete animator;
 		animator = nullptr;
 	}
 
-	if (hModel > 0) {
+	if (hModel > 0) 
+	{
 		MV1DeleteModel(hModel);
 		hModel = -1;
 	}

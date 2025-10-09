@@ -13,7 +13,8 @@ public:
 	void Update() override;
 	void Draw() override;
 private:
-	enum AnimID {
+	enum AnimID 
+	{
 		A_NEUTRAL = 0,
 		A_RUN,
 		A_ATTACK1,
@@ -38,7 +39,8 @@ private:
 	int hSabel;
 
 	// èÛë‘ëJà⁄
-	enum State {
+	enum State 
+	{
 		ST_NORMAL = 0,
 		ST_ATTACK1,
 		ST_ATTACK2,
@@ -48,8 +50,9 @@ private:
 	void UpdateNormal();
 	void UpdateAttack1();
 	void UpdateAttack2();
+	void UpdateAttack3();
 
-	bool attackNext;
+	bool canNextAttack;
 	VECTOR sabelBtm;
 	VECTOR sabelTop;
 };

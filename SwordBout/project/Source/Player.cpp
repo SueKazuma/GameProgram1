@@ -65,7 +65,9 @@ VECTOR3 moveVec;
 void Player::Update()
 {
 	animator->Update();
-	switch (state) {
+	// 状態遷移
+	switch (state) 
+	{
 	case ST_NORMAL:
 		UpdateNormal();
 		break;
@@ -74,6 +76,9 @@ void Player::Update()
 		break;
 	case ST_ATTACK2:
 		UpdateAttack2();
+		break;
+	case ST_ATTACK3:
+		UpdateAttack3();
 		break;
 	}
 
@@ -91,8 +96,7 @@ void Player::Update()
 void Player::Draw()
 {	
 	Object3D::Draw(); // キャラの表示
-	DrawLine3D(transform.position + moveVec*100, transform.position,
-		GetColor(255,0,0));
+	DrawLine3D(transform.position + moveVec*100, transform.position, GetColor(255,0,0));
 
 	MATRIX m = MV1GetFrameLocalWorldMatrix(hModel, 29);
 	MV1SetMatrix(hSabel, m);
@@ -103,6 +107,10 @@ void Player::Draw()
 	DrawLine3D(sabelBtm, sabelTop, GetColor(255,0,0));
 }
 
+///////////////////
+/// 各State関数 ///
+///////////////////
+
 void Player::UpdateNormal()
 {
 	// 入力をベクトルに直す
@@ -112,58 +120,100 @@ void Player::UpdateNormal()
 	inputVec.x = inp.x;
 	inputVec.z = inp.y;
 	// 進みたいベクトルを求める（実際に進むベクトル）
-	//　　　カメラの回転は、camera->GetTransform().rotationで手に入る
-	if (inputVec.Size() > 0) {
+	// カメラの回転は、camera->GetTransform().rotationで手に入る
+	if (inputVec.Size() > 0) 
+	{
 		animator->Play(A_RUN);
 		moveVec = inputVec * MGetRotY(camera->GetTransform().rotation.y);
 		VECTOR3 front = VECTOR3(0, 0, 1) * MGetRotY(transform.rotation.y);
 		VECTOR3 right = VECTOR3(1, 0, 0) * MGetRotY(transform.rotation.y);
 		float moveCos = VDot(moveVec, front);
-		if (moveCos >= cosf(30.0f * DegToRad)) { // 正面付近
+		if (moveCos >= cosf(30.0f * DegToRad))  // 正面付近
+		{
 			transform.position += moveVec * 5.0f;
 			transform.rotation.y = atan2f(moveVec.x, moveVec.z);
-		} else if (VDot(moveVec, right) >= 0) {
+		} 
+		else if (VDot(moveVec, right) >= 0) // migi
+		{
 			transform.rotation.y += 30.0f * DegToRad;
-		} else {
+		} 
+		else 
+		{
 			transform.rotation.y -= 30.0f * DegToRad;
 		}
-	} else {
+	}
+	else 
+	{
 		animator->Play(A_NEUTRAL);
 	}
 	if (pad->OnPush(XINPUT_BUTTON_A)) // 攻撃
 	{
 		animator->Play(A_ATTACK1);
-		attackNext = false;
+		canNextAttack = false;
 		state = ST_ATTACK1; //状態を変える
 	}
 }
 
 void Player::UpdateAttack1()
 {
-	if (animator->GetCurrentFrame() >= 8.5f) {
-		if (attackNext) {
+	if (animator->GetCurrentFrame() >= 8.5f) 
+	{
+		if (canNextAttack)
+		{
 			animator->Play(A_ATTACK2);
-			attackNext = false;
+			canNextAttack = false;
 			state = ST_ATTACK2;
 		}
-	} else {
+	} 
+	else 
+	{
 		Goblin* gob = FindGameObject<Goblin>();
 		gob->CheckAttack(sabelBtm, sabelTop);
 
 		PadInput* pad = FindGameObject<PadInput>();
 		if (pad->OnPush(XINPUT_BUTTON_A))
 		{
-			attackNext = true;
+			canNextAttack = true;
 		}
 	}
-	if (animator->IsFinish()) { // 攻撃アニメーションが終わった
+	if (animator->IsFinish()) // 攻撃アニメーションが終わった
+	{ 
 		state = ST_NORMAL; //状態を変える
 	}
 }
 
 void Player::UpdateAttack2()
 {
-	if (animator->IsFinish()) { // 攻撃アニメーションが終わった
+	if (animator->GetCurrentFrame() >= 9.5f)
+	{
+		if (canNextAttack)
+		{
+			animator->Play(A_ATTACK3);
+			canNextAttack = false;
+			state = ST_ATTACK3;
+		}
+	}
+	else
+	{
+		Goblin* gob = FindGameObject<Goblin>();
+		gob->CheckAttack(sabelBtm, sabelTop);
+
+		PadInput* pad = FindGameObject<PadInput>();
+		if (pad->OnPush(XINPUT_BUTTON_A))
+		{
+			canNextAttack = true;
+		}
+	}
+	if (animator->IsFinish())  // 攻撃アニメーションが終わった
+	{
+		state = ST_NORMAL; //状態を変える
+	}
+}
+
+void Player::UpdateAttack3()
+{
+	if (animator->IsFinish())  // 攻撃アニメーションが終わった
+	{
 		state = ST_NORMAL; //状態を変える
 	}
 }

@@ -1,7 +1,8 @@
 #pragma once
 #include "Object3D.h"
 
-class Camera : public Object3D {
+class Camera : public Object3D 
+{
 public:
 	Camera();
 	~Camera();

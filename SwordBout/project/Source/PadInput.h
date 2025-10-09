@@ -17,7 +17,8 @@ public:
 	bool OnPush(int id);
 	void Reset();
 
-	enum Button {
+	enum Button 
+	{
 		ATTACK = XINPUT_BUTTON_X,
 		JUMP = XINPUT_BUTTON_A,
 	};

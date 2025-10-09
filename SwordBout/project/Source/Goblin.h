@@ -10,7 +10,8 @@ public:
 	void Update() override;
 	void CheckAttack(VECTOR3 p1, VECTOR3 p2);
 private:
-	enum AnimID {
+	enum AnimID 
+	{
 		A_NEUTRAL = 0,
 		A_WALK,
 		A_RUN,
@@ -22,4 +23,17 @@ private:
 		A_DOWN,
 	};
 	Animator* animator;
+
+	enum State
+	{
+		ST_WAIT = 0,
+		ST_CHASE,
+		ST_ATTACK,
+		ST_DAMAGE,
+	};
+	State state;
+	void UpdateWait();
+	void UpdateChase();
+	void UpdateAttack();
+	void UpdateDamage();
 };

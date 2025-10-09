@@ -13,7 +13,8 @@ StageObject::StageObject(const std::string& fileName, const VECTOR3& position, c
 	MV1SetMatrix(hModel, transform.GetLocalMatrix());
 
 	hHitModel = MV1LoadModel((folder + fileName + "_c.mv1").c_str());
-	if (hHitModel > 0) {
+	if (hHitModel > 0) 
+	{
 		MV1SetMatrix(hHitModel, transform.GetLocalMatrix());
 		MV1SetupCollInfo(hHitModel);
 	}
@@ -21,11 +22,13 @@ StageObject::StageObject(const std::string& fileName, const VECTOR3& position, c
 
 StageObject::~StageObject()
 {
-	if (hHitModel > 0) {
+	if (hHitModel > 0) 
+	{
 		MV1DeleteModel(hHitModel);
 		hHitModel = -1;
 	}
-	if (hModel > 0) {
+	if (hModel > 0) 
+	{
 		MV1DeleteModel(hModel);
 		hModel = -1;
 	}
@@ -33,21 +36,24 @@ StageObject::~StageObject()
 
 void StageObject::Draw()
 {
-	if (IsTag("Stage_Obj001")) {
+	if (IsTag("Stage_Obj001")) 
+	{
 		MV1SetSemiTransDrawMode(DX_SEMITRANSDRAWMODE_NOT_SEMITRANS_ONLY);
 		Object3D::Draw();
 		MV1SetSemiTransDrawMode(DX_SEMITRANSDRAWMODE_ALWAYS);
 	}
-	else {
+	else 
+	{
 		Object3D::Draw();
 	}
 }
 
 void StageObject::PostDraw()
 {
-	if (IsTag("Stage_Obj001")) {
+	if (IsTag("Stage_Obj001")) 
+	{
 		MV1SetSemiTransDrawMode(DX_SEMITRANSDRAWMODE_SEMITRANS_ONLY);
-		//		MV1SetUseZBuffer(hModel, FALSE);
+		// MV1SetUseZBuffer(hModel, FALSE);
 		Object3D::Draw();
 		MV1SetUseZBuffer(hModel, TRUE);
 		MV1SetSemiTransDrawMode(DX_SEMITRANSDRAWMODE_ALWAYS);
@@ -57,7 +63,8 @@ void StageObject::PostDraw()
 bool StageObject::CollideLine(const VECTOR& pos1, const VECTOR& pos2, VECTOR* hit) const
 {
 	MV1_COLL_RESULT_POLY ret = MV1CollCheck_Line(hModel, -1, pos1, pos2);
-	if (ret.HitFlag > 0) {
+	if (ret.HitFlag > 0) 
+	{
 		*hit = ret.HitPosition;
 		return true;
 	}
