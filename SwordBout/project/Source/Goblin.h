@@ -8,8 +8,7 @@ public:
 	Goblin(const VECTOR& pos, float rot);
 	~Goblin();
 	void Update() override;
-
-	void CheckAttack( VECTOR3 p1,VECTOR3 p2);
+	void CheckAttack(VECTOR3 p1, VECTOR3 p2);
 private:
 	enum AnimID {
 		A_NEUTRAL = 0,
@@ -23,21 +22,4 @@ private:
 		A_DOWN,
 	};
 	Animator* animator;
-
-	// ó‘Ô‘JˆÚ
-	enum State
-	{
-		ST_NORMAL = 0,
-
-		// ’Ç”ö
-		// UŒ‚
-		// Œ³‹‚½êŠ‚Ö
-		// ƒ_ƒ[ƒW
-	};
-	State state; // ó‘Ô‚ğ‚Â•Ï”
-
-	void UpdateNormal();
-	void UpdateAttack1();
-	void UpdateAttack2();
-	void UpdateAttack3();
 };

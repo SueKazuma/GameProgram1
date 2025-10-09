@@ -48,11 +48,8 @@ private:
 	void UpdateNormal();
 	void UpdateAttack1();
 	void UpdateAttack2();
-	void UpdateAttack3();
 
-	bool canNextAttack = false;
-
+	bool attackNext;
 	VECTOR sabelBtm;
 	VECTOR sabelTop;
-	MATRIX m;
 };

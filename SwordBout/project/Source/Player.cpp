@@ -44,11 +44,7 @@ Player::Player(const VECTOR3& pos, float rot)
 
 	hSabel = MV1LoadModel("data/model/Character/Weapon/Sabel/Sabel.mv1");
 	assert(hSabel > 0);
-<<<<<<< HEAD
 	
-=======
-
->>>>>>> ä¸Šæ›¸ãå‰ï¼Ÿ
 	state = ST_NORMAL;
 }
 
@@ -69,25 +65,16 @@ VECTOR3 moveVec;
 void Player::Update()
 {
 	animator->Update();
-	switch (state) 
-	{
+	switch (state) {
 	case ST_NORMAL:
 		UpdateNormal();
 		break;
 	case ST_ATTACK1:
 		UpdateAttack1();
 		break;
-<<<<<<< HEAD
-=======
-	case Player::ST_ATTACK2:
+	case ST_ATTACK2:
 		UpdateAttack2();
 		break;
-	case Player::ST_ATTACK3:
-		UpdateAttack3();
-		break;
-	default:
-		break;
->>>>>>> ä¸Šæ›¸ãå‰ï¼Ÿ
 	}
 
 	Stage* stage = FindGameObject<Stage>();
@@ -107,25 +94,13 @@ void Player::Draw()
 	DrawLine3D(transform.position + moveVec*100, transform.position,
 		GetColor(255,0,0));
 
-<<<<<<< HEAD
 	MATRIX m = MV1GetFrameLocalWorldMatrix(hModel, 29);
 	MV1SetMatrix(hSabel, m);
 	MV1DrawModel(hSabel);
 
-	VECTOR s1 = VGet(0,0,0) * m;
-	VECTOR s2 = VGet(0,-100,0) * m;
-	DrawLine3D(s1, s2, GetColor(255,0,0));
-=======
-	// ƒT[ƒxƒ‹‚Ì•`‰æ
-	m = MV1GetFrameLocalWorldMatrix(hModel, 29);
-	sabelBtm = VGet(0.0f, 0.0f, 0.0f) * m;
-	sabelTop = VGet(0.0f, -100.0f, 0.0f) * m;
-
-	MV1SetMatrix(hSabel, m);
-	MV1DrawModel(hSabel);
-	// ƒT[ƒxƒ‹ƒ‰ƒCƒ“
-	DrawLine3D(sabelBtm, sabelTop, GetColor(255.0f, 0.0f, 0.0f));
->>>>>>> ä¸Šæ›¸ãå‰ï¼Ÿ
+	sabelBtm = VGet(0,0,0) * m;
+	sabelTop = VGet(0,-100,0) * m;
+	DrawLine3D(sabelBtm, sabelTop, GetColor(255,0,0));
 }
 
 void Player::UpdateNormal()
@@ -137,7 +112,7 @@ void Player::UpdateNormal()
 	inputVec.x = inp.x;
 	inputVec.z = inp.y;
 	// i‚İ‚½‚¢ƒxƒNƒgƒ‹‚ğ‹‚ß‚éiÀÛ‚Éi‚ŞƒxƒNƒgƒ‹j
-	// ƒJƒƒ‰‚Ì‰ñ“]‚ÍAcamera->GetTransform().rotation‚Åè‚É“ü‚é
+	//@@@ƒJƒƒ‰‚Ì‰ñ“]‚ÍAcamera->GetTransform().rotation‚Åè‚É“ü‚é
 	if (inputVec.Size() > 0) {
 		animator->Play(A_RUN);
 		moveVec = inputVec * MGetRotY(camera->GetTransform().rotation.y);
@@ -155,89 +130,40 @@ void Player::UpdateNormal()
 	} else {
 		animator->Play(A_NEUTRAL);
 	}
-<<<<<<< HEAD
 	if (pad->OnPush(XINPUT_BUTTON_A)) // UŒ‚
-=======
-#pragma endregion
-
-	// UŒ‚
-#pragma region
-	if (pad->OnPush(XINPUT_BUTTON_A) )
->>>>>>> ä¸Šæ›¸ãå‰ï¼Ÿ
 	{
-		canNextAttack = false;
 		animator->Play(A_ATTACK1);
+		attackNext = false;
 		state = ST_ATTACK1; //ó‘Ô‚ğ•Ï‚¦‚é
 	}
 }
 
 void Player::UpdateAttack1()
 {
-<<<<<<< HEAD
-	if (animator->IsFinish()) { // UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI‚í‚Á‚½
-		state = ST_NORMAL; //ó‘Ô‚ğ•Ï‚¦‚é
-=======
-	// UŒ‚“ü—Í•ªŠò
-	if (animator->GetCurrentFrame() >= 8.5f)
-	{
-		if (canNextAttack)
-		{
-			canNextAttack = false;
+	if (animator->GetCurrentFrame() >= 8.5f) {
+		if (attackNext) {
 			animator->Play(A_ATTACK2);
-			state = State::ST_ATTACK2;
+			attackNext = false;
+			state = ST_ATTACK2;
 		}
-		else if (animator->IsFinish())
+	} else {
+		Goblin* gob = FindGameObject<Goblin>();
+		gob->CheckAttack(sabelBtm, sabelTop);
+
+		PadInput* pad = FindGameObject<PadInput>();
+		if (pad->OnPush(XINPUT_BUTTON_A))
 		{
-			canNextAttack = false;
-			state = State::ST_NORMAL;
+			attackNext = true;
 		}
 	}
-	else 
-	{
-		PadInput* pad = FindGameObject<PadInput>();
-		if (pad->OnPush(XINPUT_BUTTON_A)) 
-		{
-			canNextAttack = true;
-		}
-
-		Goblin* goblin = FindGameObject<Goblin>();
-		goblin->CheckAttack(sabelBtm, sabelTop);
+	if (animator->IsFinish()) { // UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI‚í‚Á‚½
+		state = ST_NORMAL; //ó‘Ô‚ğ•Ï‚¦‚é
 	}
 }
 
 void Player::UpdateAttack2()
 {
-	// UŒ‚“ü—Í•ªŠò
-	if (animator->GetCurrentFrame() >= 8.5f)
-	{
-		if (canNextAttack)
-		{
-			canNextAttack = false;
-			animator->Play(A_ATTACK3);
-			state = State::ST_ATTACK3;
-		}
-		else if (animator->IsFinish())
-		{
-			canNextAttack = false;
-			state = State::ST_NORMAL;
-		}
-	}
-	else
-	{
-		PadInput* pad = FindGameObject<PadInput>();
-		if (pad->OnPush(XINPUT_BUTTON_A))
-		{
-			canNextAttack = true;
-		}
-	}
-}
-
-void Player::UpdateAttack3()
-{
-	// UŒ‚I—¹ŒãAƒAƒCƒhƒ‹ó‘Ô‚Ö
-	if (animator->IsFinish())
-	{
-		state = State::ST_NORMAL;
->>>>>>> ä¸Šæ›¸ãå‰ï¼Ÿ
+	if (animator->IsFinish()) { // UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI‚í‚Á‚½
+		state = ST_NORMAL; //ó‘Ô‚ğ•Ï‚¦‚é
 	}
 }

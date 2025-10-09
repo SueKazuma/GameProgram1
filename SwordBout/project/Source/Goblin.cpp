@@ -48,24 +48,13 @@ Goblin::~Goblin()
 void Goblin::Update()
 {
 	animator->Update();
-
-	// ó‘Ô‘JˆÚ‚ð‚±‚±‚É
-	switch (state)
-	{
-	case Goblin::ST_NORMAL:
-		UpdateNormal();
-		break;
-	default:
-		break;
-	}
 }
 
 void Goblin::CheckAttack(VECTOR3 p1, VECTOR3 p2)
 {
 	MV1RefreshCollInfo(hModel);
 	MV1_COLL_RESULT_POLY ret = MV1CollCheck_Line(hModel, -1, p1, p2);
-	if (ret.HitFlag > 0)
-	{
+	if (ret.HitFlag > 0) {
 		animator->Play(A_DAMAGE);
 	}
 }
