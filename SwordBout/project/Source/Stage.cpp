@@ -75,6 +75,6 @@ void Stage::ReadMappingData(std::string filename)
 		int object[8];
 	};
 	ifs.close();
-	new Goblin(VECTOR3(500, 150, 500), DX_PI);
+	new Goblin(VECTOR3(500, 250, 1500), DX_PI);
 	new RedGoblin(VECTOR3(300, 150, 500), 0);
 }

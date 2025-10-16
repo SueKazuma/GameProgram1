@@ -33,6 +33,9 @@ Goblin::Goblin(const VECTOR& pos, float rot)
 	transform.position = pos;
 	transform.rotation.y = rot;
 
+	territory.center = pos;
+	territory.range = 2000.0;
+
 	state = ST_WAIT;
 }
 
@@ -69,6 +72,9 @@ void Goblin::Update()
 		break;
 	case ST_ATTACK:
 		UpdateAttack();
+		break;
+	case ST_BACK:
+		UpdateBack();
 		break;
 	}
 
@@ -124,42 +130,73 @@ void Goblin::UpdateChase()
 	Player* player = FindGameObject<Player>();
 	VECTOR3 playerPos = player->GetTransform().position;
 	VECTOR3 toPlayer = playerPos - transform.position;
-	float length = VSize(toPlayer);
 
-	// 追いつけ(距離)
-	if (false) 
+	// 前進
+	VECTOR3 velocity = VECTOR3(0, 0, 6) * MGetRotY(transform.rotation.y);
+	transform.position += velocity;
+	// 回転
+	VECTOR3 right = VECTOR3(1, 0, 0) * MGetRotY(transform.rotation.y);
+
+	float ip = VDot(right, toPlayer);
+	if (ip >= 0)  // migi
 	{
+		transform.rotation.y += DegToRad;
+	}
+	else
+	{
+		transform.rotation.y -= DegToRad;
+	}
+
+	// 近づいたら
+	if (toPlayer.Size() < 100.0f)
+	{
+		animator->Play(A_ATTACK1);
 		state = ST_ATTACK;
 	}
-	else 
+
+	// テリトリーでたらback
+	VECTOR3 toTerrritory = transform.position - territory.center;
+	if ( toTerrritory.Size() >= territory.range) 
 	{
-		// 前進
-		VECTOR3 velocity = VECTOR3(0, 0, 6) * MGetRotY(transform.rotation.y);
-		transform.position += velocity;
-		// 回転
-		VECTOR3 right = VECTOR3(1, 0, 0) * MGetRotY(transform.rotation.y);
-
-		float ip = VDot(right, toPlayer);
-		if (ip >= 0)  // migi
-		{
-			transform.rotation.y += DegToRad;
-		}
-		else
-		{
-			transform.rotation.y -= DegToRad;
-		}
-		
+		animator->Play(A_WALK);
+		state = ST_BACK;
 	}
-
 }
 
 void Goblin::UpdateAttack()
 {
-	animator->Play(A_ATTACK1);
 	if (animator->IsFinish())
 	{
 		animator->Play(A_NEUTRAL);
-		state = ST_DAMAGE;
+		state = ST_WAIT;
+	}
+}
+
+void Goblin::UpdateBack()
+{
+	VECTOR3 toTerrritory = territory.center - transform.position;
+
+	// 前進
+	VECTOR3 velocity = VECTOR3(0, 0, 3) * MGetRotY(transform.rotation.y);
+	transform.position += velocity;
+	// 回転
+	VECTOR3 right = VECTOR3(3, 0, 0) * MGetRotY(transform.rotation.y);
+
+	float ip = VDot(right, toTerrritory);
+	if (ip >= 0)  // migi
+	{
+		transform.rotation.y += DegToRad;
+	}
+	else
+	{
+		transform.rotation.y -= DegToRad;
+	}
+
+	//
+	if (toTerrritory.Size() < 100.0f) 
+	{
+		animator->Play(A_NEUTRAL);
+		state = ST_WAIT;
 	}
 }
 
@@ -168,6 +205,6 @@ void Goblin::UpdateDamage()
 	if (animator->IsFinish())
 	{
 		animator->Play(A_NEUTRAL);
-		state = ST_DAMAGE;
+		state = ST_WAIT;
 	}
 }
