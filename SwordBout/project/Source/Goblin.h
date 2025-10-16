@@ -39,6 +39,9 @@ private:
 	void UpdateBack();
 	void UpdateDamage();
 
+	void GoTo(VECTOR3 toPosition, float moveSpeed, float rotateSpeed);
+	float MoveTo(VECTOR3 targetPosition, float moveSpeed, float rotateSpeed);
+
 	struct CircleRange
 	{
 		VECTOR center;

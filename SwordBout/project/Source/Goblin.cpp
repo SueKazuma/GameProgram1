@@ -129,34 +129,18 @@ void Goblin::UpdateChase()
 {
 	Player* player = FindGameObject<Player>();
 	VECTOR3 playerPos = player->GetTransform().position;
-	VECTOR3 toPlayer = playerPos - transform.position;
 
-	// 前進
-	VECTOR3 velocity = VECTOR3(0, 0, 6) * MGetRotY(transform.rotation.y);
-	transform.position += velocity;
-	// 回転
-	VECTOR3 right = VECTOR3(1, 0, 0) * MGetRotY(transform.rotation.y);
-
-	float ip = VDot(right, toPlayer);
-	if (ip >= 0)  // migi
-	{
-		transform.rotation.y += DegToRad;
-	}
-	else
-	{
-		transform.rotation.y -= DegToRad;
-	}
-
+	float d = MoveTo(territory.center, 6, 6);
 	// 近づいたら
-	if (toPlayer.Size() < 100.0f)
+	if (d < 100.0f)
 	{
 		animator->Play(A_ATTACK1);
 		state = ST_ATTACK;
 	}
 
 	// テリトリーでたらback
-	VECTOR3 toTerrritory = transform.position - territory.center;
-	if ( toTerrritory.Size() >= territory.range) 
+	VECTOR3 toTerritory = territory.center - transform.position;
+	if ( toTerritory.Size() >= territory.range) 
 	{
 		animator->Play(A_WALK);
 		state = ST_BACK;
@@ -174,26 +158,11 @@ void Goblin::UpdateAttack()
 
 void Goblin::UpdateBack()
 {
-	VECTOR3 toTerrritory = territory.center - transform.position;
+	// 見えてたら追いかける
+	// 見えてなかったら帰る
 
-	// 前進
-	VECTOR3 velocity = VECTOR3(0, 0, 3) * MGetRotY(transform.rotation.y);
-	transform.position += velocity;
-	// 回転
-	VECTOR3 right = VECTOR3(3, 0, 0) * MGetRotY(transform.rotation.y);
-
-	float ip = VDot(right, toTerrritory);
-	if (ip >= 0)  // migi
-	{
-		transform.rotation.y += DegToRad;
-	}
-	else
-	{
-		transform.rotation.y -= DegToRad;
-	}
-
-	//
-	if (toTerrritory.Size() < 100.0f) 
+	float d = MoveTo(territory.center, 3, 6);
+	if (d < 100.0f)
 	{
 		animator->Play(A_NEUTRAL);
 		state = ST_WAIT;
@@ -207,4 +176,58 @@ void Goblin::UpdateDamage()
 		animator->Play(A_NEUTRAL);
 		state = ST_WAIT;
 	}
+}
+
+/// <summary>
+/// 設定地点に向かう！共通！！！
+/// </summary>
+/// <param name="toPosition"></param>
+/// <param name="moveSpeed"></param>
+/// <param name="rotateSpeed"></param>
+void Goblin::GoTo(VECTOR3 toPosition, float moveSpeed, float rotateSpeed)
+{
+	// 前進
+	VECTOR3 velocity = VECTOR3(0, 0, moveSpeed) * MGetRotY(transform.rotation.y);
+	transform.position += velocity;
+	// 回転
+	VECTOR3 right = VECTOR3(rotateSpeed, 0, 0) * MGetRotY(transform.rotation.y);
+
+	float ip = VDot(right, toPosition);
+	if (ip >= 0)  // migi
+	{
+		transform.rotation.y += DegToRad;
+	}
+	else
+	{
+		transform.rotation.y -= DegToRad;
+	}
+}
+
+/// <summary>
+/// 正しい共通
+/// </summary>
+/// <param name="targetPosition"></param>
+/// <param name="moveSpeed"></param>
+/// <param name="rotateSpeed"></param>
+/// <returns></returns>
+float Goblin::MoveTo(VECTOR3 targetPosition, float moveSpeed, float rotateSpeed)
+{
+	VECTOR3 toTarget = territory.center - transform.position;
+
+	// 前進
+	VECTOR3 velocity = VECTOR3(0, 0, moveSpeed) * MGetRotY(transform.rotation.y);
+	transform.position += velocity;
+	// 回転
+	VECTOR3 right = VECTOR3(rotateSpeed, 0, 0) * MGetRotY(transform.rotation.y);
+
+	float ip = VDot(right, toTarget);
+	if (ip >= 0)  // migi
+	{
+		transform.rotation.y += DegToRad;
+	}
+	else
+	{
+		transform.rotation.y -= DegToRad;
+	}
+	return toTarget.Size();
 }
