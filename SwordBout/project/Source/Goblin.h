@@ -1,14 +1,16 @@
 #pragma once
-#include "Object3D.h"
+#include "Enemy.h"
 #include "Animator.h"
 
-class Goblin : public Object3D {
+class Goblin : public Enemy {
 public:
 	Goblin();
 	Goblin(const VECTOR& pos, float rot);
 	~Goblin();
 	void Update() override;
-	void CheckAttack(VECTOR3 p1, VECTOR3 p2);
+		
+	void CheckAttack(VECTOR3 p1, VECTOR3 p2) override;
+
 private:
 	enum AnimID 
 	{
@@ -39,7 +41,6 @@ private:
 	void UpdateBack();
 	void UpdateDamage();
 
-	void GoTo(VECTOR3 toPosition, float moveSpeed, float rotateSpeed);
 	float MoveTo(VECTOR3 targetPosition, float moveSpeed, float rotateSpeed);
 
 	struct CircleRange

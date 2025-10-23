@@ -17,7 +17,8 @@ Stage::Stage(int number)
 	sprintf_s<16>(filename, "Stage%02d", number);
 	new StageObject(filename, VGet(0,0,0), VGet(0,0,0), VGet(1,1,1));
 	ReadMappingData(filename);
-	if (number == 0) {
+	if (number == 0) 
+	{
 		new Sky("Stage00_sky");
 	}
 }
@@ -43,7 +44,8 @@ void Stage::ReadMappingData(std::string filename)
 	std::ifstream ifs(folder + filename + ".dat", std::ios::binary);
 	assert(ifs); // “Ç‚ß‚È‚¯‚ê‚ÎƒGƒ‰[
 
-	struct Header {
+	struct Header 
+	{
 		char chunk[4];
 		int CharaInfoNum;
 		int ObjectInfoNum;
@@ -55,18 +57,46 @@ void Stage::ReadMappingData(std::string filename)
 		int killCharaNum;
 		int killTargetChara;
 	};
-	struct CharaInfo {
-		int id;
-		VECTOR position;
-		float angle;
-	};
-	struct ObjectInfo {
-		int id;
-		VECTOR position;
-		VECTOR rotation;
-		VECTOR scale;
-	};
-	struct EventInfo {
+	Header header;
+	ifs.read((char*)&header, sizeof(header));
+	new Player(header.PlayerPosition, header.PlayerAngle); // Player‚Ìî•ñ
+
+	// 8‘Ì:(header.CharaInfoNum)‚Ì“GƒLƒƒƒ‰‚ğ“Ç‚Ş
+	for (int i =0; i< header.CharaInfoNum; i++)
+	{
+		struct CharaInfo
+		{
+			int id;
+			VECTOR position;
+			float angle;
+		};
+		CharaInfo charaInfo;
+		ifs.read((char*)&charaInfo, sizeof(charaInfo));
+
+		char s[256];
+		sprintf_s<256>(s, "Enemy_Obj%03d", charaInfo.id);
+
+		//new StageObject(charaInfo.id, charaInfo.position, charaInfo.angle);	// Enemy‚Ìî•ñ
+	}
+
+	for (int i = 0; i < header.ObjectInfoNum; i++)
+	{
+		struct ObjectInfo
+		{
+			int id;
+			VECTOR position;
+			VECTOR rotation;
+			VECTOR scale;
+		};
+		ObjectInfo objectInfo;
+		ifs.read((char*)&objectInfo, sizeof(objectInfo));
+		char s[256];
+		sprintf_s<256>(s, "Stage_Obj%03d", objectInfo.id);
+		new StageObject(s, objectInfo.position, objectInfo.rotation, objectInfo.scale);	// StageObject‚Ìî•ñ
+	}
+
+	struct EventInfo 
+	{
 		int type;
 		VECTOR position;
 		VECTOR area;
@@ -75,6 +105,8 @@ void Stage::ReadMappingData(std::string filename)
 		int object[8];
 	};
 	ifs.close();
-	new Goblin(VECTOR3(500, 250, 1500), DX_PI);
-	new RedGoblin(VECTOR3(300, 150, 500), 0);
+
+	//new Goblin(VECTOR3(0, 250, 1500), DX_PI);
+	//new Goblin(VECTOR3(50, 250, 1500), DX_PI);
+	//new RedGoblin(VECTOR3(300, 150, 500), 0);
 }
