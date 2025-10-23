@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "PadInput.h"
 #include "Goblin.h"
+#include "Enemy.h"
 
 Player::Player() : Player(VGet(0,0,0), 0.0f){}
 
@@ -167,8 +168,11 @@ void Player::UpdateAttack1()
 	} 
 	else 
 	{
-		Goblin* gob = FindGameObject<Goblin>();
-		gob->CheckAttack(sabelBtm, sabelTop);
+		std::list<Enemy*> gobs = FindGameObjects<Enemy>();
+		for (Enemy* gob : gobs) 
+		{
+			gob->CheckAttack(sabelBtm, sabelTop);
+		}
 
 		PadInput* pad = FindGameObject<PadInput>();
 		if (pad->OnPush(XINPUT_BUTTON_A))

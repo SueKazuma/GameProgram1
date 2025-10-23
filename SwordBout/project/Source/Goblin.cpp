@@ -89,20 +89,25 @@ void Goblin::Update()
 	}
 }
 
-///////////////////
-/// 各State関数 ///
-///////////////////
-
+/// <summary>
+/// ダメージを受ける。
+/// </summary>
 void Goblin::CheckAttack(VECTOR3 p1, VECTOR3 p2)
 {
 	MV1RefreshCollInfo(hModel);
 	MV1_COLL_RESULT_POLY ret = MV1CollCheck_Line(hModel, -1, p1, p2);
-	if (ret.HitFlag > 0) 
+	if (ret.HitFlag > 0)
 	{
 		animator->Play(A_DAMAGE);
 		state = ST_DAMAGE;
 	}
 }
+
+///////////////////
+/// 各State関数 ///
+///////////////////
+
+
 
 void Goblin::UpdateWait()
 {
@@ -116,7 +121,7 @@ void Goblin::UpdateWait()
 	if (toPlayer.Size() > 1000.0f)
 		return;
 
-	if (cosT >= cos(60*DegToRad) ) // コンタクト！
+	if (cosT >= cos(60 * DegToRad) ) // コンタクト！
 	{
 		animator->Play(A_RUN);
 		state = ST_CHASE;
@@ -130,7 +135,7 @@ void Goblin::UpdateChase()
 	Player* player = FindGameObject<Player>();
 	VECTOR3 playerPos = player->GetTransform().position;
 
-	float d = MoveTo(territory.center, 6, 6);
+	float d = MoveTo(playerPos, 6, 6);
 	// 近づいたら
 	if (d < 100.0f)
 	{
@@ -179,40 +184,11 @@ void Goblin::UpdateDamage()
 }
 
 /// <summary>
-/// 設定地点に向かう！共通！！！
+/// 正しい共通化
 /// </summary>
-/// <param name="toPosition"></param>
-/// <param name="moveSpeed"></param>
-/// <param name="rotateSpeed"></param>
-void Goblin::GoTo(VECTOR3 toPosition, float moveSpeed, float rotateSpeed)
-{
-	// 前進
-	VECTOR3 velocity = VECTOR3(0, 0, moveSpeed) * MGetRotY(transform.rotation.y);
-	transform.position += velocity;
-	// 回転
-	VECTOR3 right = VECTOR3(rotateSpeed, 0, 0) * MGetRotY(transform.rotation.y);
-
-	float ip = VDot(right, toPosition);
-	if (ip >= 0)  // migi
-	{
-		transform.rotation.y += DegToRad;
-	}
-	else
-	{
-		transform.rotation.y -= DegToRad;
-	}
-}
-
-/// <summary>
-/// 正しい共通
-/// </summary>
-/// <param name="targetPosition"></param>
-/// <param name="moveSpeed"></param>
-/// <param name="rotateSpeed"></param>
-/// <returns></returns>
 float Goblin::MoveTo(VECTOR3 targetPosition, float moveSpeed, float rotateSpeed)
 {
-	VECTOR3 toTarget = territory.center - transform.position;
+	VECTOR3 toTarget = targetPosition - transform.position;
 
 	// 前進
 	VECTOR3 velocity = VECTOR3(0, 0, moveSpeed) * MGetRotY(transform.rotation.y);
@@ -221,7 +197,7 @@ float Goblin::MoveTo(VECTOR3 targetPosition, float moveSpeed, float rotateSpeed)
 	VECTOR3 right = VECTOR3(rotateSpeed, 0, 0) * MGetRotY(transform.rotation.y);
 
 	float ip = VDot(right, toTarget);
-	if (ip >= 0)  // migi
+	if (ip >= 0)
 	{
 		transform.rotation.y += DegToRad;
 	}
